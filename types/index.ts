@@ -3,3 +3,7 @@ export interface IExplore {
   location: string;
   distance: string;
 }
+export interface ILiveAnywhere {
+  img: string;
+  title: string;
+}
