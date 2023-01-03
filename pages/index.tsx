@@ -8,6 +8,8 @@ import Banner from '../components/Banner';
 import { ILiveAnywhere, IExplore } from '../types';
 import SmallCard from '../components/SmallCard';
 import MediumCard from '../components/MediumCard';
+import LargeCard from '../components/LargeCard';
+import Footer from '../components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -53,7 +55,14 @@ export default function Home({
             ))}
           </div>
         </section>
+        <LargeCard
+          description="Wishlists curated by Airbnb."
+          buttonText="Get Inspired"
+          img="https://links.papareact.com/4cj"
+          title="The Greatest Outdoors"
+        />
       </main>
+      <Footer/>
     </>
   );
 }
