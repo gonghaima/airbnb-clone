@@ -10,7 +10,7 @@ const SmallCard = ({ img, location, distance }: IExplore) => {
     >
       {/* left */}
       <div className="relative h-16 w-16">
-        <Image src={img} layout="fill" className="rounded-lg" />
+        <Image src={img} alt="explore image" layout="fill" className="rounded-lg" />
       </div>
 
       {/* right */}

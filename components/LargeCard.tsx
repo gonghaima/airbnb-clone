@@ -13,6 +13,7 @@ const LargeCard = ({
       <div className="relative h-96 min-w-[300px]">
         <Image
           src={img}
+          alt="greatest outdoors image"
           layout="fill"
           objectFit="cover"
           className="rounded-2xl"
