@@ -13,13 +13,12 @@ import Footer from '../components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home({
-  exploreData,
-  cardData,
-}: {
+type Props = {
   exploreData: IExplore[];
   cardData: ILiveAnywhere[];
-}): JSX.Element {
+};
+
+export default function Home({ exploreData, cardData }: Props): JSX.Element {
   return (
     <>
       <Head>
@@ -62,7 +61,7 @@ export default function Home({
           title="The Greatest Outdoors"
         />
       </main>
-      <Footer/>
+      <Footer />
     </>
   );
 }

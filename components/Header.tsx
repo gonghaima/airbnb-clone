@@ -12,10 +12,10 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker, RangeKeyDict } from 'react-date-range';
 
 const Header: FunctionComponent = () => {
-  const [searchInput, setSearchInput] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [noOfGuests, setNoOfGuests] = useState(1);
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [noOfGuests, setNoOfGuests] = useState<number>(1);
   const selectionRange = {
     startDate: startDate,
     endDate: endDate,
@@ -25,9 +25,9 @@ const Header: FunctionComponent = () => {
     setStartDate(ranges.selection.startDate || new Date());
     setEndDate(ranges.selection.endDate || new Date());
   };
-  const resetInput =()=>{
-    setSearchInput("")
-  }
+  const resetInput = () => {
+    setSearchInput('');
+  };
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* left */}
@@ -90,9 +90,11 @@ const Header: FunctionComponent = () => {
             />
           </div>
           {/* Emmet for react */}
-          <div className='flex'>
-            <button onClick={resetInput} className='flex-grow text-gray-500'>Cancel</button>
-            <button className='flex-grow text-gray-400'>Search</button>
+          <div className="flex">
+            <button onClick={resetInput} className="flex-grow text-gray-500">
+              Cancel
+            </button>
+            <button className="flex-grow text-gray-400">Search</button>
           </div>
         </div>
       )}
