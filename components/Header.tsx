@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, FunctionComponent, useState } from 'react';
 import Image from 'next/legacy/image';
 import {
   GlobeAltIcon,
@@ -10,12 +10,18 @@ import {
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker, RangeKeyDict } from 'react-date-range';
+import { useRouter } from 'next/router';
 
-const Header: FunctionComponent = () => {
+interface placeholder {
+  placeholder?: string;
+}
+
+const Header: FC<placeholder> = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [noOfGuests, setNoOfGuests] = useState<number>(1);
+  const router = useRouter();
   const selectionRange = {
     startDate: startDate,
     endDate: endDate,
@@ -28,11 +34,23 @@ const Header: FunctionComponent = () => {
   const resetInput = () => {
     setSearchInput('');
   };
+  const search = () => {
+    router.push({
+      pathname: '/search',
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        noOfGuests,
+      },
+    });
+  };
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* left */}
       <div className="relative flex items-center h-10 cursor-pointer my-auto">
         <Image
+          onClick={() => router.push('/')}
           src="https://links.papareact.com/qd3"
           alt="header image"
           layout="fill"
@@ -51,7 +69,7 @@ const Header: FunctionComponent = () => {
           className="pl-5 bg-transparent outline-none flex-grow
         text-sm text-gray-600 placeholder-gray-400"
           type="text"
-          placeholder="Start your seasrch"
+          placeholder={placeholder || 'Start your seasrch'}
         />
         <SearchIcon
           className="hidden md:inline-flex h-8 bg-red-400 text-white
@@ -94,7 +112,9 @@ const Header: FunctionComponent = () => {
             <button onClick={resetInput} className="flex-grow text-gray-500">
               Cancel
             </button>
-            <button className="flex-grow text-gray-400">Search</button>
+            <button onClick={search} className="flex-grow text-gray-400">
+              Search
+            </button>
           </div>
         </div>
       )}
