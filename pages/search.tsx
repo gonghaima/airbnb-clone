@@ -3,10 +3,15 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { format } from 'date-fns';
+import { GetServerSideProps } from 'next';
+import { SearchResult } from '../types';
+import InfoCard from '../components/infoCard';
 
-type Props = {};
+type Props = {
+  searchResults: SearchResult[];
+};
 
-export default function Search({}: Props) {
+export default function Search({ searchResults }: Props) {
   const router: NextRouter = useRouter();
 
   const { location, startDate, endDate, noOfGuests } = router.query;
@@ -36,9 +41,25 @@ export default function Search({}: Props) {
             <p className="button">Rooms and Beds</p>
             <p className="button">More filters</p>
           </div>
+          <div className="flex flex-col">
+            {searchResults.map((item) => (
+              <InfoCard key={item.img} {...item} />
+            ))}
+          </div>
         </section>
       </main>
       <Footer />
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  // const searchResults = await fetch('https://links.papareact.com/isz');
+  const jsonRes = await fetch('https://www.jsonkeeper.com/b/5NPS');
+  const searchResults = await jsonRes.json();
+  return {
+    props: {
+      searchResults,
+    },
+  };
+};
