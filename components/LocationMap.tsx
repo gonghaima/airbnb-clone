@@ -23,23 +23,6 @@ const deepCompareEqualsForMaps = createCustomEqual(
   }
 );
 
-function useDeepCompareMemoize(value: any) {
-  const ref = React.useRef();
-
-  if (!deepCompareEqualsForMaps(value, ref.current)) {
-    ref.current = value;
-  }
-
-  return ref.current;
-}
-
-function useDeepCompareEffectForMaps(
-  callback: React.EffectCallback,
-  dependencies: any[]
-) {
-  React.useEffect(callback, dependencies.map(useDeepCompareMemoize));
-}
-
 const render = (status: Status) => {
   return <h1>{status}</h1>;
 };
@@ -49,7 +32,7 @@ interface MapProps extends google.maps.MapOptions {
   onClick?: (e: google.maps.MapMouseEvent) => void;
   onIdle?: (map: google.maps.Map) => void;
   children?: React.ReactNode;
-  latLng: google.maps.LatLng;
+  latLng: google.maps.LatLngLiteral;
 }
 const Map: React.FC<MapProps> = ({
   onClick,
@@ -75,11 +58,6 @@ const Map: React.FC<MapProps> = ({
 
   // because React does not do deep comparisons, a custom hook is used
   // see discussion in https://github.com/googlemaps/js-samples/issues/946
-  useDeepCompareEffectForMaps(() => {
-    if (map) {
-      map.setOptions(options);
-    }
-  }, [map, options]);
 
   return (
     <>
@@ -152,7 +130,13 @@ const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
   return null;
 };
 
-const LocationMap = ({ googleApiKey, latLng }): JSX.Element => {
+const LocationMap = ({
+  googleApiKey,
+  latLng,
+}: {
+  googleApiKey: string;
+  latLng: google.maps.LatLngLiteral;
+}): JSX.Element => {
   return (
     <div className="w-full">
       <Wrapper apiKey={googleApiKey} render={render}>
