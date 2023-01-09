@@ -1,20 +1,24 @@
 import { NextRouter, useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
 import { SearchResult } from '../types';
-import InfoCard from '../components/infoCard';
+import InfoCard from '../components/InfoCard';
+import LocationMap from '../components/LocationMap';
 
 type Props = {
   searchResults: SearchResult[];
+  googleApiKey: string;
 };
 
-export default function Search({ searchResults }: Props) {
+export default function Search({ searchResults, googleApiKey }: Props) {
   const router: NextRouter = useRouter();
 
   const { location, startDate, endDate, noOfGuests } = router.query;
+
+  const [latLng, setLatLng] = useState({ lat: 51.48695, lng: -0.095091 });
 
   const formattedStartDate = format(
     new Date(startDate as string),
@@ -47,6 +51,9 @@ export default function Search({ searchResults }: Props) {
             ))}
           </div>
         </section>
+        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+          <LocationMap googleApiKey={googleApiKey} latLng={latLng} />
+        </section>
       </main>
       <Footer />
     </div>
@@ -57,9 +64,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   // const searchResults = await fetch('https://links.papareact.com/isz');
   const jsonRes = await fetch('https://www.jsonkeeper.com/b/5NPS');
   const searchResults = await jsonRes.json();
+  const googleApiKey = process.env.GOOGLE_MAPS_API_KEY;
   return {
     props: {
       searchResults,
+      googleApiKey,
     },
   };
 };
