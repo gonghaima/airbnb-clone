@@ -26,3 +26,20 @@ export interface SearchResult {
   long: number;
   lat: number;
 }
+
+export interface SearchComponent {
+  searchResults: SearchResult[];
+  googleApiKey: string;
+}
+
+export interface LocationMap {
+  googleApiKey: string;
+  data: SearchResult[];
+}
+
+export interface MapProps extends google.maps.MapOptions {
+  onClick?: (e: google.maps.MapMouseEvent) => void;
+  onIdle?: (map: google.maps.Map) => void;
+  children?: React.ReactNode;
+  latLng: google.maps.LatLngLiteral;
+}

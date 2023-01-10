@@ -4,22 +4,17 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
-import { SearchResult } from '../types';
+import { SearchComponent, SearchResult } from '../types';
 import InfoCard from '../components/InfoCard';
 import LocationMap from '../components/LocationMap';
 
-type Props = {
-  searchResults: SearchResult[];
-  googleApiKey: string;
-};
-
-export default function Search({ searchResults, googleApiKey }: Props) {
+export default function Search({
+  searchResults,
+  googleApiKey,
+}: SearchComponent) {
   const router: NextRouter = useRouter();
 
   const { location, startDate, endDate, noOfGuests } = router.query;
-
-  const [latLng, setLatLng] = useState({ lat: 51.48695, lng: -0.095091 });
-  const latLngs = searchResults.map(({ long, lat }) => ({ lat, lng: long }));
 
   const formattedStartDate = format(
     new Date(startDate as string),
@@ -53,7 +48,7 @@ export default function Search({ searchResults, googleApiKey }: Props) {
           </div>
         </section>
         <section className="hidden xl:inline-flex xl:min-w-[600px]">
-          <LocationMap googleApiKey={googleApiKey} latLngs={latLngs} />
+          <LocationMap googleApiKey={googleApiKey} data={searchResults} />
         </section>
       </main>
       <Footer />
