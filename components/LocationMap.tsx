@@ -32,14 +32,14 @@ interface MapProps extends google.maps.MapOptions {
   onClick?: (e: google.maps.MapMouseEvent) => void;
   onIdle?: (map: google.maps.Map) => void;
   children?: React.ReactNode;
-  latLng: google.maps.LatLngLiteral;
+  latLngs: google.maps.LatLngLiteral[];
 }
 const Map: React.FC<MapProps> = ({
   onClick,
   onIdle,
   children,
   style,
-  latLng,
+  latLngs,
   ...options
 }) => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ const Map: React.FC<MapProps> = ({
       setMap(
         new window.google.maps.Map(ref.current, {
           zoom: 12,
-          center: latLng,
+          center: latLngs[0],
         })
       );
     }
@@ -73,44 +73,17 @@ const Map: React.FC<MapProps> = ({
   );
 };
 
-// const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
-//   const [marker, setMarker] = React.useState<google.maps.Marker>();
-
-//   React.useEffect(() => {
-//     if (!marker) {
-//       // const myLatLng = { lat: -25.363, lng: 131.044 };
-//       const myLatLng = { lat: 51.48695, lng: -0.095091 };
-//       setMarker(new google.maps.Marker({ position: myLatLng }));
-//     }
-
-//     // remove marker from map on unmount
-//     return () => {
-//       if (marker) {
-//         marker.setMap(null);
-//       }
-//     };
-//   }, [marker]);
-
-//   React.useEffect(() => {
-//     if (marker) {
-//       marker.setOptions(options);
-//     }
-//   }, [marker, options]);
-
-//   return null;
-// };
-
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
   const [marker, setMarker] = React.useState<google.maps.Marker>();
 
   React.useEffect(() => {
     if (!marker) {
-      // const myLatLng = { lat: -25.363, lng: 131.044 };
-      // const myLatLng = { lat: 51.48695, lng: -0.095091 };
       const lat = Number(options.position?.lat) || 0;
       const lng = Number(options.position?.lng) || 0;
-      // const myLatLng = { lat: 51.48695, lng: -0.095091 };
-      setMarker(new google.maps.Marker({ position: { lat, lng } }));
+      setMarker(new google.maps.Marker(
+        { position: { lat, lng }, 
+        icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png' 
+      }));
     }
 
     // remove marker from map on unmount
@@ -132,21 +105,24 @@ const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
 
 const LocationMap = ({
   googleApiKey,
-  latLng,
+  latLngs,
 }: {
   googleApiKey: string;
-  latLng: google.maps.LatLngLiteral;
+  latLngs: google.maps.LatLngLiteral[];
 }): JSX.Element => {
   return (
     <div className="w-full">
       <Wrapper apiKey={googleApiKey} render={render}>
+       
         <Map
           center={{ lat: 51.48695, lng: -0.095091 }}
           zoom={12}
           style={{ flexGrow: '1', height: '100%' }}
-          latLng={latLng}
+          latLngs={latLngs}
         >
-          <Marker position={latLng} />
+          {latLngs.map(latLng=>(
+            <Marker position={latLng} />
+          ))}
         </Map>
       </Wrapper>
     </div>

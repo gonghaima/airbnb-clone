@@ -19,6 +19,7 @@ export default function Search({ searchResults, googleApiKey }: Props) {
   const { location, startDate, endDate, noOfGuests } = router.query;
 
   const [latLng, setLatLng] = useState({ lat: 51.48695, lng: -0.095091 });
+  const latLngs = searchResults.map(({ long, lat }) => ({ lat, lng: long }));
 
   const formattedStartDate = format(
     new Date(startDate as string),
@@ -52,7 +53,7 @@ export default function Search({ searchResults, googleApiKey }: Props) {
           </div>
         </section>
         <section className="hidden xl:inline-flex xl:min-w-[600px]">
-          <LocationMap googleApiKey={googleApiKey} latLng={latLng} />
+          <LocationMap googleApiKey={googleApiKey} latLngs={latLngs} />
         </section>
       </main>
       <Footer />
