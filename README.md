@@ -16,7 +16,7 @@
 
 ## Website
 
-https://airbnb-clone-lime-nine.vercel.app/
+https://airbnb-clone-three-ecru.vercel.app/
 
 
 ## Setup

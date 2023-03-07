@@ -54,7 +54,6 @@ function infowindow(contentString: string, ariaLabel: string) {
 
 const Marker = (options: any) => {
   const [marker, setMarker] = React.useState<google.maps.Marker>();
-  debugger;
   React.useEffect(() => {
     if (!marker) {
       const lat = Number(options?.position?.lat) || 0;
